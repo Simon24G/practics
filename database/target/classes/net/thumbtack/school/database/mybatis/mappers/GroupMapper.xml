@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+<collection property="trainees"
+    resultMap="TraineeMap"
+    columnPrefix="trainee." />
+
+TODO: columnPrefix="trainee." - !!!!!
+-->
+<mapper namespace="net.thumbtack.school.database.mybatis.mappers.GroupMapper">
+    <resultMap id="GroupMap" type="net.thumbtack.school.database.model.Group">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="room" column="room"/>
+        <collection property="trainees" column="id" ofType="net.thumbtack.school.database.model.Trainee"
+                    resultMap="net.thumbtack.school.database.mybatis.mappers.TraineeMapper.TraineeMap"
+                    javaType="java.util.List" columnPrefix="trainee_"/>
+        <collection property="subjects" column="id" ofType="net.thumbtack.school.database.model.Subject"
+                    resultMap="net.thumbtack.school.database.mybatis.mappers.SubjectMapper.SubjectMap"
+                    javaType="java.util.List" columnPrefix="subject_"/>
+    </resultMap>
+</mapper>

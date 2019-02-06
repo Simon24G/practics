@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.thumbtack.school.database.mybatis.mappers.SchoolMapper">
+    <resultMap id="SchoolMap" type="net.thumbtack.school.database.model.School">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="year" column="year"/>
+        <collection property="groups" columnPrefix="group_" column="id" ofType="net.thumbtack.school.database.model.Group"
+                    resultMap="net.thumbtack.school.database.mybatis.mappers.GroupMapper.GroupMap" javaType="java.util.List"/>
+
+    </resultMap>
+    <select id="getAllUsingJoin" resultMap="SchoolMap">
+        SELECT school.*, `group`.id as group_id, `group`.name as group_name,
+                `group`.room as group_room, trainee.firstName as group_trainee_firstName,
+                trainee.lastName as group_trainee_lastName,
+                trainee.rating as group_trainee_rating, trainee.id as group_trainee_id,
+                subject.id as group_subject_id, subject.name as group_subject_name
+        FROM school,
+            `group` LEFT JOIN trainee on trainee.group_id = `group`.id
+            LEFT JOIN subject_group on subject_group.group_id = `group`.id
+            LEFT JOIN subject on subject.id = subject_group.subject_id
+        WHERE `group`.school_id = school.id
+    </select>
+</mapper>
